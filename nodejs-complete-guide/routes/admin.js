@@ -1,17 +1,20 @@
+const path = require("path");
+
 const express = require("express");
+
+const rootDir = require("../util/path");
 
 //Router 받는 방법
 const router = express.Router();
 
+// /admin/add-product => GET
 router.get("/add-product", (req, res, next) => {
     // console.log("In another middleware!");
-    res.send(
-        "<form action='/product' method='POST'><input type='text' name='title'><button type='submit'>Add Product</button></form>"
-    );
+    res.sendFile(path.join(rootDir, "views", "add-product.html"));
 });
-
+// /admin/add-product => POST
 //POST 요청만 받게 하는 방법
-router.post("/product", (req, res, next) => {
+router.post("/add-product", (req, res, next) => {
     console.log(req.body);
     res.redirect("/");
 });
