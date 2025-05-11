@@ -1,18 +1,16 @@
 //Import express module
 const express = require("express");
+const bodyParser = require("body-parser");
 
 const app = express();
 
-//middleware
-//next => 다음 미들웨어로 이동하기 위한 인자, function
-app.use((req, res, next) => {
-    console.log("In the middleware!");
-    next(); // Allows the request to continue to the next middleware in line
-});
+const adminRoutes = require("./routes/admin");
+const shopRoutes = require("./routes/shop");
 
-app.use((req, res, next) => {
-    console.log("In another middleware!");
-    res.send("<h1>Hello from Express!</h1>");
-});
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// 순서를 잘 생각해야 함
+app.use(adminRoutes);
+app.use(shopRoutes);
 
 app.listen(8080);
