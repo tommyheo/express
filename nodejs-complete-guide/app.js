@@ -1,13 +1,18 @@
-//request를 받기 위해서 http 모듈 가져오기
-const http = require("http");
-// routes 모듈을 가져오기 위해
-const routes = require("./routes");
+//Import express module
+const express = require("express");
 
-console.log(routes.someText);
-//서버 생성
-// createServer Callback function
-const server = http.createServer(routes.handler);
+const app = express();
 
-// 서버가 종료되지 않고 계속 실행되어 요청을 듣게 하는 메서드
-// 인자 -  포트번호
-server.listen(8080);
+//middleware
+//next => 다음 미들웨어로 이동하기 위한 인자, function
+app.use((req, res, next) => {
+    console.log("In the middleware!");
+    next(); // Allows the request to continue to the next middleware in line
+});
+
+app.use((req, res, next) => {
+    console.log("In another middleware!");
+    res.send("<h1>Hello from Express!</h1>");
+});
+
+app.listen(8080);

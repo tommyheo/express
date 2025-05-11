@@ -16,16 +16,18 @@ const requestHandler = (req, res) => {
 
     if (url === "/message" && method === "POST") {
         const body = [];
-        //특정 이벤트를 들을 수 있는 메서드 on()
+        //특정 이벤트를 들을 수 있는 메서드 on() // data 변경이 있을 떄마다 리스닝
         req.on("data", (chunk) => {
             console.log(chunk);
             body.push(chunk);
         });
         return req.on("end", () => {
+            // 모든 데이터 수신이 끝났을 때 실행
             parsedBody = Buffer.concat(body).toString();
             const message = parsedBody.split("=")[1];
             // console.log(parsedBody);
             fs.writeFile("message.txt", message, (err) => {
+                // 파일 쓰기가 완료되었을 때 실행
                 res.statusCode = 302;
                 res.setHeader("Location", "/");
                 return res.end();
